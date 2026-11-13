@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Động Lực Học Tập - Kỹ Sư Tương Lai</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tech: {
+                            blue: '#1d4ed8', 
+                            cyan: '#06b6d4', 
+                            dark: '#0f172a', 
+                            gray: '#f8fafc', 
+                            panel: '#ffffff',
+                            border: '#e2e8f0',
+                            red: '#ef4444'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    backgroundImage: {
+                        'blueprint': 'radial-gradient(#cbd5e1 1px, transparent 1px)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f8fafc;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        /* Animated Background Blobs */
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob { animation: blob 10s infinite alternate; }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+
+        /* Floating animations */
+        .float { animation: float 3s ease-in-out infinite; }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Staggered Item Fade Up */
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(15px);
+            animation: fadeUp 0.5s ease-out forwards;
+        }
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .progress-bar-stripes {
+            background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+            background-size: 1rem 1rem;
+            animation: progress-stripes 1s linear infinite;
+        }
+        @keyframes progress-stripes { from { background-position: 1rem 0; } to { background-position: 0 0; } }
+        
+        .typing-dot { animation: typing 1.4s infinite ease-in-out both; }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+    </style>
+</head>
+<body class="text-tech-dark h-screen overflow-hidden flex flex-col font-sans relative">
+
+    <!-- BACKGROUND BLOBS -->
+    <div class="fixed top-[-10%] left-[-10%] w-96 h-96 bg-tech-blue/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob pointer-events-none -z-10"></div>
+    <div class="fixed top-[20%] right-[-10%] w-96 h-96 bg-tech-cyan/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000 pointer-events-none -z-10"></div>
+    <div class="fixed bottom-[-20%] left-[20%] w-96 h-96 bg-purple-500/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000 pointer-events-none -z-10"></div>
+
+    <!-- 1. LOGIN SCREEN -->
+    <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-tech-gray/60 backdrop-blur-sm">
+        <div class="glass-panel p-10 rounded-2xl w-[400px] shadow-2xl border-t-4 border-t-tech-blue relative overflow-hidden fade-in">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-tech-blue/10 rounded-bl-full -z-10 animate-pulse"></div>
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-gradient-to-br from-tech-blue to-tech-cyan text-white rounded-xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-lg shadow-tech-blue/40 transform hover:scale-110 transition-transform float">
+                    <i class="fa-solid fa-cogs"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-tech-dark tracking-tight">KỸ SƯ TƯƠNG LAI</h1>
+                <p class="text-sm text-slate-500 mt-1 font-mono">ĐỘNG LỰC HỌC TẬP - IUH</p>
+            </div>
+            
+            <form id="loginForm" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Tài khoản</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-user absolute left-4 top-3.5 text-slate-400"></i>
+                        <input type="text" id="username" class="w-full bg-slate-50/50 border border-tech-border rounded-lg py-3 pl-11 pr-4 focus:outline-none focus:border-tech-blue focus:ring-2 focus:ring-tech-blue/20 transition-all bg-white" required>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Mật khẩu</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-400"></i>
+                        <input type="password" id="password" class="w-full bg-slate-50/50 border border-tech-border rounded-lg py-3 pl-11 pr-10 focus:outline-none focus:border-tech-blue focus:ring-2 focus:ring-tech-blue/20 transition-all bg-white" required>
+                        <button type="button" id="togglePassword" class="absolute right-4 top-3.5 text-slate-400 hover:text-tech-blue transition-colors">
+                            <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="loginError" class="hidden text-tech-red text-sm bg-red-50 p-3 rounded-lg border border-red-100 flex items-center gap-2 fade-in">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span>Thông tin không chính xác.</span>
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-tech-blue to-blue-600 hover:from-blue-600 hover:to-tech-blue text-white font-bold py-3 rounded-lg transition-all shadow-lg shadow-tech-blue/30 flex items-center justify-center gap-2 hover:-translate-y-1">
+                    <i class="fa-solid fa-right-to-bracket"></i> KHỞI ĐỘNG HỆ THỐNG
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN APP SCREEN -->
+    <div id="appScreen" class="hidden flex-1 flex flex-col h-full z-10">
+        <!-- HEADER -->
+        <header class="glass-panel border-b px-6 py-3 flex justify-between items-center z-20 shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-tech-blue to-tech-cyan text-white rounded-lg flex items-center justify-center text-xl shadow-md hover:rotate-90 transition-transform duration-500 cursor-pointer">
+                    <i class="fa-solid fa-cogs"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-tech-dark">FAET STUDY</h1>
+                    <p class="text-xs text-tech-blue font-mono font-semibold">KHOA CÔNG NGHỆ ĐỘNG LỰC - IUH</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_#22c55e]"></div>
+                    <span class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Bạn đang hoạt động</span>
+                </div>
+                <div class="h-8 w-px bg-slate-200"></div>
+                <div class="flex items-center gap-3 group">
+                    <div class="text-right">
+                        <p class="text-sm font-bold text-tech-dark group-hover:text-tech-blue transition-colors">Kỹ Sư Tương Lai</p>
+                        <p class="text-xs text-slate-500 font-mono">Student</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-tech-blue to-tech-cyan text-white flex items-center justify-center shadow-md shadow-tech-blue/20">
+                        <i class="fa-solid fa-user-astronaut"></i>
+                    </div>
+                    <button id="btnLogout" class="ml-2 text-slate-400 hover:text-tech-red transition-all p-2 rounded-full hover:bg-red-50" title="Đăng xuất">
+                        <i class="fa-solid fa-power-off"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- TOP NAVIGATION -->
+        <div class="px-6 py-4 bg-white/40 border-b border-tech-border shrink-0 backdrop-blur-md">
+            <div class="grid grid-cols-5 gap-4 max-w-7xl mx-auto">
+                <a href="https://sv.iuh.edu.vn" target="_blank" class="flex flex-col items-center gap-2 p-3 rounded-xl bg-white border border-slate-200 hover:border-tech-blue hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1.5 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-full bg-blue-50 text-tech-blue flex items-center justify-center text-xl group-hover:bg-tech-blue group-hover:text-white group-hover:scale-110 transition-all duration-300">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <span class="text-xs font-semibold text-slate-700 text-center uppercase tracking-wide group-hover:text-tech-blue transition-colors">Cổng Sinh Viên</span>
+                </a>
+                <a href="https://dkhp.iuh.edu.vn" target="_blank" class="flex flex-col items-center gap-2 p-3 rounded-xl bg-white border border-slate-200 hover:border-tech-cyan hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1.5 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-full bg-cyan-50 text-tech-cyan flex items-center justify-center text-xl group-hover:bg-tech-cyan group-hover:text-white group-hover:scale-110 transition-all duration-300">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <span class="text-xs font-semibold text-slate-700 text-center uppercase tracking-wide group-hover:text-tech-cyan transition-colors">Đăng ký học phần</span>
+                </a>
+                <a href="https://doantn.iuh.edu.vn" target="_blank" class="flex flex-col items-center gap-2 p-3 rounded-xl bg-white border border-slate-200 hover:border-emerald-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1.5 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl group-hover:bg-emerald-500 group-hover:text-white group-hover:scale-110 transition-all duration-300">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <span class="text-xs font-semibold text-slate-700 text-center uppercase tracking-wide group-hover:text-emerald-600 transition-colors">Điểm rèn luyện</span>
+                </a>
+                <a href="https://www.facebook.com/faet.iuh.edu.vn?locale=vi_VN" target="_blank" class="flex flex-col items-center gap-2 p-3 rounded-xl bg-white border border-slate-200 hover:border-blue-600 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1.5 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-xl group-hover:bg-blue-600 group-hover:text-white group-hover:scale-110 transition-all duration-300">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </div>
+                    <span class="text-xs font-semibold text-slate-700 text-center uppercase tracking-wide group-hover:text-blue-600 transition-colors">Đoàn Khoa</span>
+                </a>
+                <div class="flex flex-col items-center gap-2 p-3 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-tech-blue shadow-md relative overflow-hidden hover:-translate-y-1.5 transition-all duration-300 group">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-tech-blue/10 rounded-bl-full -z-10 group-hover:scale-150 transition-transform duration-500"></div>
+                    <div class="w-12 h-12 rounded-full bg-tech-blue text-white flex items-center justify-center text-xl shadow-lg shadow-tech-blue/40 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-solid fa-folder-open"></i>
+                    </div>
+                    <span class="text-xs font-bold text-tech-blue text-center uppercase tracking-wide">Tài liệu học tập</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3-COLUMN WORKSPACE -->
+        <div class="flex-1 flex overflow-hidden">
+            
+            <!-- LEFT COLUMN: CATEGORIES -->
+            <aside class="w-64 glass-panel border-r flex flex-col shrink-0 z-10 bg-white/60">
+                <div class="p-4 border-b bg-white/50 backdrop-blur-md">
+                    <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">
+                        <i class="fa-solid fa-filter mr-1"></i> Phân loại Học kỳ
+                    </h2>
+                </div>
+                <div class="flex-1 overflow-y-auto p-3 space-y-2" id="categoryList">
+                    <!-- Categories injected by JS -->
+                </div>
+            </aside>
+
+            <!-- CENTER COLUMN: DOCUMENT MANAGER -->
+            <main class="flex-1 flex flex-col bg-transparent relative">
+                <!-- Toolbar -->
+                <div class="p-4 border-b border-tech-border glass-panel flex justify-between items-center shrink-0 bg-white/60">
+                    <div class="relative w-96 group">
+                        <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 group-focus-within:text-tech-blue transition-colors"></i>
+                        <input type="text" id="searchInput" placeholder="Tìm kiếm tài liệu, bản vẽ, đồ án..." class="w-full bg-white border border-slate-300 rounded-lg py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-tech-blue focus:ring-2 focus:ring-tech-blue/20 transition-all shadow-sm">
+                    </div>
+                    <button id="btnOpenUpload" class="bg-gradient-to-r from-tech-blue to-blue-600 hover:from-blue-600 hover:to-tech-blue text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-all shadow-lg shadow-tech-blue/30 flex items-center gap-2 hover:-translate-y-0.5">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Tải lên
+                    </button>
+                </div>
+                
+                <!-- View Header -->
+                <div id="viewHeader" class="px-6 pt-5 pb-2 bg-transparent shrink-0"></div>
+
+                <!-- Document Grid -->
+                <div class="flex-1 overflow-y-auto px-6 pb-6">
+                    <div id="documentGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-20">
+                        <!-- Folders or Files injected by JS -->
+                    </div>
+                    
+                    <!-- Empty State -->
+                    <div id="emptyState" class="hidden h-full flex flex-col items-center justify-center text-center pb-20 fade-in">
+                        <div class="w-32 h-32 mb-4 text-tech-cyan/20 float">
+                            <i class="fa-solid fa-folder-open text-8xl drop-shadow-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-700 mb-2">Thư mục đang trống</h3>
+                        <p class="text-sm text-slate-500 mb-6 max-w-md">Kỹ sư tương lai hãy là người đầu tiên tải lên các tài liệu học tập, bản vẽ thiết kế hoặc đồ án để lưu trữ và chia sẻ nhé!</p>
+                        <button onclick="document.getElementById('btnOpenUpload').click()" class="bg-white border-2 border-dashed border-slate-300 hover:border-tech-blue text-slate-700 hover:text-tech-blue px-6 py-3 rounded-xl font-medium transition-all shadow-sm flex items-center gap-2 hover:bg-blue-50">
+                            <i class="fa-solid fa-plus text-tech-blue"></i> Thêm tài liệu mới
+                        </button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- RIGHT COLUMN: AI FAET ASSISTANT -->
+            <aside class="w-80 glass-panel border-l flex flex-col shrink-0 z-10 bg-white/60 shadow-[-4px_0_15px_rgba(0,0,0,0.03)]">
+                <div class="p-4 border-b bg-gradient-to-r from-tech-blue to-tech-cyan text-white flex justify-between items-center shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm border border-white/30 relative">
+                            <div class="absolute inset-0 rounded-full border-2 border-white/50 animate-ping opacity-20"></div>
+                            <i class="fa-solid fa-robot text-lg drop-shadow-md"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-sm font-bold tracking-wide">AI FAET</h2>
+                            <p class="text-[10px] text-blue-100 uppercase tracking-wider font-mono flex items-center">
+                                <span class="relative flex h-2 w-2 mr-1.5">
+                                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                  <span class="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
+                                </span>
+                                Trợ lý ảo FAET STUDY
+                            </p>
+                        </div>
+                    </div>
+                    <button id="btnClearChat" class="text-white/70 hover:text-white transition-all hover:rotate-180 p-2" title="Làm mới">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                </div>
+                
+                <div class="flex-1 overflow-y-auto p-4 space-y-4 bg-white/40 backdrop-blur-sm" id="chatMessages">
+                    <div class="flex gap-3 fade-in">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-tech-blue to-tech-cyan text-white flex items-center justify-center shrink-0 shadow-md text-xs">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div class="bg-white border border-slate-200 p-3.5 rounded-2xl rounded-tl-none shadow-sm max-w-[85%] text-sm text-slate-700 leading-relaxed">
+                            Chào <b>Kỹ Sư Tương Lai</b>! Mình là <b>AI FAET</b> - Trợ lý ảo FAET STUDY.<br><br>
+                            Mình có thể hỗ trợ bạn giúp bạn nhỉ?
+                    </div>
+                </div>
+
+                <div class="px-4 pb-3 pt-2 bg-white/40 flex flex-wrap gap-2 border-t border-slate-100" id="quickPrompts">
+                    <button class="quick-prompt-btn px-3 py-1.5 bg-white border border-slate-200 text-tech-blue rounded-full text-xs font-semibold hover:border-tech-blue hover:bg-blue-50 transition-all shadow-sm hover:-translate-y-0.5">
+                        <i class="fa-solid fa-newspaper mr-1"></i> Tin tức Đoàn khoa
+                    </button>
+                    <button class="quick-prompt-btn px-3 py-1.5 bg-white border border-slate-200 text-tech-cyan rounded-full text-xs font-semibold hover:border-tech-cyan hover:bg-cyan-50 transition-all shadow-sm hover:-translate-y-0.5">
+                        <i class="fa-solid fa-lightbulb mr-1"></i> Bí kíp học tập
+                    </button>
+                    <button class="quick-prompt-btn px-3 py-1.5 bg-white border border-slate-200 text-emerald-600 rounded-full text-xs font-semibold hover:border-emerald-600 hover:bg-emerald-50 transition-all shadow-sm hover:-translate-y-0.5">
+                        <i class="fa-solid fa-flag mr-1"></i> Hoạt động
+                    </button>
+                </div>
+
+                <div class="p-4 bg-white border-t border-slate-200 z-10">
+                    <form id="chatForm" class="relative flex items-center">
+                        <input type="text" id="chatInput" placeholder="Nhập câu hỏi cho AI FAET..." class="w-full bg-slate-100/80 border border-slate-200 rounded-full py-2.5 pl-4 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-tech-blue/20 focus:border-tech-blue transition-all">
+                        <button type="submit" class="absolute right-1.5 w-8 h-8 bg-tech-blue text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors shadow-md">
+                            <i class="fa-solid fa-paper-plane text-xs"></i>
+                        </button>
+                    </form>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- MODAL: UPLOAD FILE -->
+    <div id="uploadModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-tech-dark/60 backdrop-blur-sm fade-in">
+        <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden border border-slate-200 transform scale-100 transition-transform">
+            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <h3 class="text-lg font-bold text-tech-dark flex items-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-up text-tech-blue"></i> Tải lên tài liệu
+                </h3>
+                <button id="btnCloseUpload" class="text-slate-400 hover:text-tech-red transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <form id="uploadForm" class="p-6 space-y-5">
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-1">Tên tài liệu <span class="text-tech-red">*</span></label>
+                    <input type="text" id="docName" class="w-full bg-white border border-slate-300 rounded-lg py-2.5 px-3 text-sm focus:outline-none focus:border-tech-blue focus:ring-2 focus:ring-tech-blue/20 transition-all shadow-sm" placeholder="Ví dụ: Đồ án Động cơ đốt trong" required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-1">Thư mục môn học <span class="text-tech-red">*</span></label>
+                    <select id="docSubject" class="w-full bg-white border border-slate-300 rounded-lg py-2.5 px-3 text-sm focus:outline-none focus:border-tech-blue focus:ring-2 focus:ring-tech-blue/20 transition-all shadow-sm" required>
+                        <!-- Injected by JS -->
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Nguồn tài liệu (Chọn 1 trong 2)</label>
+                    <div class="flex border border-slate-200 rounded-lg overflow-hidden mb-3 p-1 bg-slate-100">
+                        <button type="button" id="tabUpload" class="flex-1 py-1.5 text-sm font-medium bg-white text-tech-blue rounded shadow-sm transition-all">Tải File</button>
+                        <button type="button" id="tabLink" class="flex-1 py-1.5 text-sm font-medium text-slate-500 hover:text-slate-700 transition-all">Dán Link</button>
+                    </div>
+
+                    <div id="panelUpload" class="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:border-tech-blue hover:bg-blue-50/50 transition-colors relative group bg-slate-50/50">
+                        <input type="file" id="fileInput" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="*/*">
+                        <div id="uploadPlaceholder" class="group-hover:scale-105 transition-transform duration-300">
+                            <i class="fa-solid fa-cloud-arrow-up text-4xl text-tech-blue/50 mb-3 float"></i>
+                            <p class="text-sm text-slate-700 font-bold mb-1">Kéo thả hoặc nhấn để chọn file</p>
+                            <p class="text-xs text-slate-400">Hỗ trợ mọi định dạng (PDF, Word, Excel, PowerPoint,...)</p>
+                        </div>
+                        <div id="uploadPreview" class="hidden flex items-center justify-center gap-4 bg-white p-4 rounded-lg shadow-sm border border-slate-200">
+                            <div id="previewIcon" class="shrink-0"></div>
+                            <div class="text-left overflow-hidden w-full">
+                                <p id="previewName" class="text-sm font-bold text-slate-700 truncate"></p>
+                                <p id="previewSize" class="text-xs text-slate-500"></p>
+                            </div>
+                            <button type="button" id="btnRemoveFile" class="text-slate-400 hover:text-tech-red p-2 z-20 relative"><i class="fa-solid fa-times"></i></button>
+                        </div>
+                    </div>
+
+                    <div id="panelLink" class="hidden">
+                        <div class="relative">
+                            <i class="fa-solid fa-link absolute left-3 top-3 text-slate-400"></i>
+                            <input type="url" id="docUrl" class="w-full bg-white border border-slate-300 rounded-lg py-2.5 pl-10 pr-3 text-sm focus:outline-none focus:border-tech-blue focus:ring-2 focus:ring-tech-blue/20 transition-all shadow-sm" placeholder="https://drive.google.com/...">
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2"><i class="fa-solid fa-circle-info text-tech-blue"></i> Thích hợp cho các file dung lượng lớn hoặc Folder Drive tổng hợp.</p>
+                    </div>
+                </div>
+                
+                <div id="uploadProgress" class="hidden">
+                    <div class="flex justify-between text-xs mb-1 font-mono font-medium">
+                        <span class="text-tech-blue animate-pulse">Đang đồng bộ dữ liệu...</span>
+                        <span id="progressText" class="text-tech-blue font-bold">0%</span>
+                    </div>
+                    <div class="h-2.5 w-full bg-slate-200 rounded-full overflow-hidden shadow-inner">
+                        <div id="progressBar" class="h-full bg-gradient-to-r from-tech-blue to-tech-cyan progress-bar-stripes w-0 transition-all duration-200"></div>
+                    </div>
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" id="btnSubmitUpload" class="w-full bg-gradient-to-r from-tech-blue to-blue-600 hover:from-blue-600 hover:to-tech-blue text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-tech-blue/30 hover:-translate-y-0.5">
+                        <i class="fa-solid fa-check mr-1"></i> HOÀN TẤT TẢI LÊN
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: CONFIRM DELETE -->
+    <div id="deleteModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-tech-dark/60 backdrop-blur-sm fade-in">
+        <div class="bg-white rounded-2xl w-full max-w-sm p-6 shadow-2xl text-center border border-slate-200">
+            <div class="w-16 h-16 bg-red-50 text-tech-red rounded-full flex items-center justify-center text-3xl mx-auto mb-4 border-4 border-red-100 float">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-800 mb-2">Xóa tài liệu này?</h3>
+            <p class="text-sm text-slate-600 mb-6">Bạn có chắc chắn muốn xóa tài liệu này khỏi kho hệ thống không? Hành động này không thể hoàn tác.</p>
+            <div class="flex gap-3">
+                <button id="btnCancelDelete" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2.5 rounded-xl transition-colors">Hủy bỏ</button>
+                <button id="btnConfirmDelete" class="flex-1 bg-tech-red hover:bg-red-600 text-white font-medium py-2.5 rounded-xl transition-colors shadow-md shadow-red-500/20">Xóa ngay</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-800 text-white px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 font-medium text-sm border border-slate-700">
+        <i class="fa-solid fa-circle-check text-green-400 text-lg"></i>
+        <span id="toastMsg">Thao tác thành công!</span>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        // --- DATA & CONFIG ---
+        const categories = [
+            { id: 'all', name: 'Tất cả Học kỳ', icon: 'fa-layer-group', color: 'text-tech-blue' },
+            { id: 'hk1', name: 'Học kỳ 1', icon: 'fa-1', color: 'text-slate-600' },
+            { id: 'hk2', name: 'Học kỳ 2', icon: 'fa-2', color: 'text-slate-600' },
+            { id: 'hk3', name: 'Học kỳ 3', icon: 'fa-3', color: 'text-slate-600' },
+            { id: 'hk4', name: 'Học kỳ 4', icon: 'fa-4', color: 'text-slate-600' },
+            { id: 'hk5', name: 'Học kỳ 5', icon: 'fa-5', color: 'text-slate-600' },
+            { id: 'hk6', name: 'Học kỳ 6', icon: 'fa-6', color: 'text-slate-600' },
+            { id: 'hk7', name: 'Học kỳ 7', icon: 'fa-7', color: 'text-slate-600' },
+            { id: 'hk8', name: 'Học kỳ 8', icon: 'fa-8', color: 'text-slate-600' },
+            { id: 'hk9', name: 'Học kỳ 9', icon: 'fa-9', color: 'text-slate-600' },
+            { id: 'tailieukhac', name: 'Tài liệu khác', icon: 'fa-10', color: 'text-slate-600' }
+        ];
+
+        // 107 Subjects Configured
+        const subjectData = [
+            { n: 'Chứng chỉ tin học', k: 'hk1' }, { n: 'Thực hành cơ khí cơ bản', k: 'hk1' }, { n: 'Toán cao cấp 1', k: 'hk1' }, { n: 'Giáo dục thể chất 1', k: 'hk1' }, { n: 'Chứng chỉ Tiếng Anh', k: 'hk1' }, { n: 'Nhập môn công nghệ kỹ thuật ô tô', k: 'hk1' }, { n: 'Giáo dục Quốc phòng và An Ninh', k: 'hk1' },
+            { n: 'Kỹ năng làm việc nhóm', k: 'hk2' }, { n: 'Toán cao cấp 2', k: 'hk2' }, { n: 'Vẽ kỹ thuật', k: 'hk2' }, { n: 'Giáo dục thể chất 2', k: 'hk2' }, { n: 'Triết học Mác - Lênin', k: 'hk2' }, { n: 'Hệ thống khung gầm ô tô', k: 'hk2' }, { n: 'Tiếng Anh 1', k: 'hk2' }, { n: 'Pháp luật đại cương', k: 'hk2' }, { n: 'Dung sai - Kỹ thuật đo', k: 'hk2' }, { n: 'Vật liệu cơ khí và thí nghiệm cơ học vật liệu', k: 'hk2' }, { n: 'Ngôn ngữ lập trình C', k: 'hk2' },
+            { n: 'Kỹ thuật điện - điện tử', k: 'hk3' }, { n: 'Cơ lý thuyết - Tĩnh học', k: 'hk3' }, { n: 'Tin học ứng dụng trong kỹ thuật', k: 'hk3' }, { n: 'Kết cấu động cơ đốt trong', k: 'hk3' }, { n: 'Thực hành hệ thống truyền lực ô tô', k: 'hk3' }, { n: 'Kinh tế chính trị Mác - Lênin', k: 'hk3' }, { n: 'Tiếng Anh 2', k: 'hk3' }, { n: 'Toán ứng dụng', k: 'hk3' }, { n: 'Hàm phức và phép biến đổi Laplace', k: 'hk3' }, { n: 'Phương pháp tính', k: 'hk3' }, { n: 'Vật lý đại cương', k: 'hk3' }, { n: 'Logic học', k: 'hk3' },
+            { n: 'Sức bền vật liệu', k: 'hk4' }, { n: 'Nhiệt động lực học kỹ thuật', k: 'hk4' }, { n: 'Thực hành hệ thống điều khiển và chuyển động ô tô', k: 'hk4' }, { n: 'Hệ thống điện thân xe', k: 'hk4' }, { n: 'Thực hành động cơ xăng', k: 'hk4' }, { n: 'Tự động hóa quá trình sản xuất', k: 'hk4' }, { n: 'Hệ thống khí nén - thuỷ lực', k: 'hk4' }, { n: 'Cơ lưu chất', k: 'hk4' }, { n: 'Dao động kỹ thuật', k: 'hk4' }, { n: 'Cơ lý thuyết - Động lực học', k: 'hk4' }, { n: 'Kỹ thuật điều khiển', k: 'hk4' }, { n: 'Vật lý kỹ thuật', k: 'hk4' }, { n: 'Điện tử công suất trong ô tô', k: 'hk4' },
+            { n: 'Nguyên lý động cơ đốt trong', k: 'hk5' }, { n: 'Thực hành hệ thống điện thân xe', k: 'hk5' }, { n: 'Nguyên lý máy', k: 'hk5' }, { n: 'Thực hành động cơ Diesel', k: 'hk5' }, { n: 'Công nghệ thông tin trong chuyển đổi số', k: 'hk5' }, { n: 'Kỹ thuật số', k: 'hk5' }, { n: 'Kỹ thuật vi xử lý', k: 'hk5' }, { n: 'Ứng dụng CAE trong thiết kế cơ khí', k: 'hk5' }, { n: 'Kỹ thuật lạnh cơ sở', k: 'hk5' }, { n: 'Hội họa', k: 'hk5' }, { n: 'Xã hội học', k: 'hk5' }, { n: 'Động lực học lưu chất tính toán', k: 'hk5' }, { n: 'Âm nhạc - Nhạc lý và Guitar căn bản', k: 'hk5' }, { n: 'Hệ cơ điện tử', k: 'hk5' }, { n: 'Tiếng Việt thực hành', k: 'hk5' }, { n: 'Tâm lý học đại cương', k: 'hk5' }, { n: 'Hệ thống nhúng - điện tử', k: 'hk5' }, { n: 'Cơ sở văn hóa Việt Nam', k: 'hk5' }, { n: 'Phương pháp số trong kỹ thuật', k: 'hk5' }, { n: 'Kỹ năng sử dụng bàn phím và thiết bị văn phòng', k: 'hk5' },
+            { n: 'Chi tiết máy', k: 'hk6' }, { n: 'Tính toán, thiết kế cơ khí hỗ trợ bằng máy tính', k: 'hk6' }, { n: 'Thực hành kỹ thuật điện tử ô tô', k: 'hk6' }, { n: 'Tính toán kết cấu động cơ đốt trong', k: 'hk6' }, { n: 'Chủ nghĩa xã hội khoa học', k: 'hk6' }, { n: 'Truyền động điện', k: 'hk6' }, { n: 'Địa lý kinh tế', k: 'hk6' }, { n: 'Vận hành và bảo trì các hệ thống nhiệt - lạnh', k: 'hk6' }, { n: 'Kỹ năng xây dựng kế hoạch', k: 'hk6' }, { n: 'Môi trường và con người', k: 'hk6' }, { n: 'Ý tưởng khởi nghiệp', k: 'hk6' }, { n: 'Ứng dụng hóa học trong Công nghiệp', k: 'hk6' }, { n: 'Ứng dụng 5S và Kaizen trong sản xuất', k: 'hk6' },
+            { n: 'Lý thuyết Ôtô', k: 'hk7' }, { n: 'Phương pháp luận nghiên cứu khoa học', k: 'hk7' }, { n: 'Lịch sử Đảng Cộng sản Việt Nam', k: 'hk7' }, { n: 'Hệ thống điện động cơ', k: 'hk7' }, { n: 'Công nghệ chế tạo ô tô', k: 'hk7' }, { n: 'Năng lượng mới trên ô tô', k: 'hk7' }, { n: 'Thực hành kỹ thuật xe máy', k: 'hk7' }, { n: 'Thực hành kỹ thuật lái xe', k: 'hk7' }, { n: 'Thực hành kỹ thuật đồng sơn', k: 'hk7' }, { n: 'Ứng dụng CAE trong thiết kế và mô phỏng động cơ', k: 'hk7' }, { n: 'Ứng dụng CAE trong thiết kế và mô phỏng an toàn ô tô', k: 'hk7' }, { n: 'Hệ thống điều khiển tự động ô tô', k: 'hk7' }, { n: 'Mô phỏng ô tô', k: 'hk7' }, { n: 'Kỹ thuật xe điện', k: 'hk7' },
+            { n: 'Tư tưởng Hồ Chí Minh', k: 'hk8' }, { n: 'Thực hành hệ thống điện động cơ', k: 'hk8' }, { n: 'Thiết kế ô tô', k: 'hk8' }, { n: 'Kỹ thuật ô tô chuyên dùng', k: 'hk8' }, { n: 'Ô tô và môi trường', k: 'hk8' }, { n: 'Quản lý dịch vụ ô tô', k: 'hk8' }, { n: 'Thực hành hệ thống điều hòa không khí trên ô tô', k: 'hk8' }, { n: 'Công nghệ bảo dưỡng ô tô', k: 'hk8' }, { n: 'Công nghệ chẩn đoán, sửa chữa ô tô', k: 'hk8' }, { n: 'Phương pháp thử nghiệm động cơ', k: 'hk8' }, { n: 'Thực hành hệ thống điều khiển tự động ô tô', k: 'hk8' }, { n: 'Quản lý sản xuất công nghiệp ô tô', k: 'hk8' }, { n: 'Thử nghiệm và đăng kiểm ô tô', k: 'hk8' }, { n: 'Thực hành xe điện', k: 'hk8' }, { n: 'Thực hành xe lai', k: 'hk8' },
+            { n: 'Thực tập doanh nghiệp', k: 'hk9' }, { n: 'Khóa luận tốt nghiệp', k: 'hk9' }
+        ];
+
+        const subjects = subjectData.map((s, index) => ({
+            id: 'subj_' + index,
+            name: s.n,
+            semester: s.k
+        }));
+
+        let documents = []; 
+        let currentSemester = 'all'; 
+        let currentSubjectId = null; 
+        let docToDelete = null;
+
+        // --- DOM ELEMENTS ---
+        const elLogin = document.getElementById('loginScreen');
+        const elApp = document.getElementById('appScreen');
+        const loginForm = document.getElementById('loginForm');
+        const loginError = document.getElementById('loginError');
+        const categoryList = document.getElementById('categoryList');
+        const viewHeader = document.getElementById('viewHeader');
+        const documentGrid = document.getElementById('documentGrid');
+        const emptyState = document.getElementById('emptyState');
+        const searchInput = document.getElementById('searchInput');
+
+        const togglePassword = document.getElementById('togglePassword');
+        const password = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+        
+        togglePassword.addEventListener('click', function () {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            eyeIcon.className = type === 'password' ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
+        });
+
+        // --- INIT ---
+        function init() {
+            if (localStorage.getItem('dlht_auth') === 'true') showApp();
+            
+            const storedDocs = localStorage.getItem('dlht_docs_v4');
+            documents = storedDocs ? JSON.parse(storedDocs) : [];
+            if(!storedDocs) saveDocs();
+
+            buildUploadDropdown();
+            renderCategories();
+            renderDocuments();
+        }
+
+        // --- AUTH ---
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const u = document.getElementById('username').value.trim();
+            const p = password.value.trim();
+            if (u === 'dongluc' && p === 'dongluc123@') {
+                localStorage.setItem('dlht_auth', 'true');
+                showApp();
+            } else {
+                loginError.classList.remove('hidden');
+                password.value = '';
+            }
+        });
+
+        document.getElementById('btnLogout').addEventListener('click', () => {
+            localStorage.removeItem('dlht_auth');
+            elApp.classList.add('hidden');
+            elLogin.classList.remove('hidden');
+            document.getElementById('password').value = '';
+            loginError.classList.add('hidden');
+        });
+
+        function showApp() {
+            elLogin.classList.add('hidden');
+            elApp.classList.remove('hidden');
+        }
+
+        // --- UI RENDER ---
+        function buildUploadDropdown() {
+            const select = document.getElementById('docSubject');
+            select.innerHTML = ''; 
+
+            categories.filter(c => c.id !== 'all').forEach(cat => {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = cat.name;
+                subjects.filter(s => s.semester === cat.id).forEach(sub => {
+                    const opt = document.createElement('option');
+                    opt.value = sub.id;
+                    opt.textContent = sub.name;
+                    optgroup.appendChild(opt);
+                });
+                select.appendChild(optgroup);
+            });
+
+            const otherOptgroup = document.createElement('optgroup');
+            otherOptgroup.label = "Tài liệu khác";
+            otherOptgroup.innerHTML = `<option value="other_subject">Các tài liệu khác (Không thuộc môn nào)</option>`;
+            select.appendChild(otherOptgroup);
+        }
+
+        function renderCategories() {
+            categoryList.innerHTML = '';
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = `w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all text-sm font-medium ${currentSemester === cat.id ? 'bg-white shadow-[0_4px_20px_rgb(0,0,0,0.05)] text-tech-blue border border-tech-blue/20 translate-x-1' : 'text-slate-600 hover:bg-slate-100 hover:text-tech-dark border border-transparent'}`;
+                btn.onclick = () => {
+                    currentSemester = cat.id;
+                    currentSubjectId = null; 
+                    searchInput.value = '';
+                    renderCategories();
+                    renderDocuments();
+                };
+                btn.innerHTML = `<div class="flex items-center gap-3"><i class="fa-solid ${cat.icon} ${currentSemester === cat.id ? 'text-tech-blue' : cat.color}"></i> <span>${cat.name}</span></div>`;
+                categoryList.appendChild(btn);
+            });
+        }
+
+        function getFileIcon(type, base64) {
+            if (type.startsWith('image/')) return `<div class="w-12 h-12 rounded-lg bg-cover bg-center border border-slate-200 shadow-sm" style="background-image: url('${base64}')"></div>`;
+            if (type.startsWith('video/')) return `<div class="w-12 h-12 rounded-lg bg-slate-800 text-white flex items-center justify-center border border-slate-200 shadow-sm"><i class="fa-solid fa-play"></i></div>`;
+            
+            let icon = 'fa-file-lines text-slate-400';
+            let bg = 'bg-slate-50 border-slate-200';
+            
+            if (type.includes('pdf')) { icon = 'fa-file-pdf text-red-500'; bg = 'bg-red-50 border-red-100'; }
+            else if (type.includes('word') || type.includes('document')) { icon = 'fa-file-word text-blue-500'; bg = 'bg-blue-50 border-blue-100'; }
+            else if (type.includes('excel') || type.includes('sheet')) { icon = 'fa-file-excel text-emerald-500'; bg = 'bg-emerald-50 border-emerald-100'; }
+            else if (type.includes('powerpoint') || type.includes('presentation')) { icon = 'fa-file-powerpoint text-orange-500'; bg = 'bg-orange-50 border-orange-100'; }
+            else if (type.includes('zip') || type.includes('rar')) { icon = 'fa-file-zipper text-purple-500'; bg = 'bg-purple-50 border-purple-100'; }
+            else if (type.includes('cad') || type.includes('dwg') || type.includes('sldprt')) { icon = 'fa-cube text-tech-cyan'; bg = 'bg-cyan-50 border-cyan-100'; }
+            else if (type === 'link') { icon = 'fa-link text-slate-500'; bg = 'bg-slate-100 border-slate-200'; }
+
+            return `<div class="w-12 h-12 rounded-lg flex items-center justify-center text-2xl border ${bg} shadow-sm group-hover:scale-110 transition-transform duration-300"><i class="fa-solid ${icon}"></i></div>`;
+        }
+
+        window.openFolder = (subjectId) => {
+            currentSubjectId = subjectId;
+            searchInput.value = '';
+            renderDocuments();
+        };
+
+        window.closeFolder = () => {
+            currentSubjectId = null;
+            searchInput.value = '';
+            renderDocuments();
+        };
+
+        function renderDocuments() {
+            const query = searchInput.value.toLowerCase();
+            documentGrid.innerHTML = '';
+            viewHeader.innerHTML = '';
+            let itemsToRender = [];
+
+            if (query !== '') {
+                viewHeader.innerHTML = `<h2 class="text-lg font-bold text-tech-dark fade-in"><i class="fa-solid fa-search mr-2 text-tech-blue"></i> Kết quả tìm kiếm cho "${searchInput.value}"</h2>`;
+                itemsToRender = documents.filter(d => d.name.toLowerCase().includes(query));
+                renderFiles(itemsToRender);
+            } else if (currentSubjectId === null) {
+                viewHeader.innerHTML = `<h2 class="text-lg font-bold text-tech-dark fade-in"><i class="fa-solid fa-layer-group text-tech-cyan mr-2"></i> Danh sách môn học</h2>`;
+                itemsToRender = subjects.filter(s => currentSemester === 'all' || s.semester === currentSemester);
+                renderFolders(itemsToRender);
+            } else {
+                const subject = subjects.find(s => s.id === currentSubjectId);
+                const subjName = subject ? subject.name : 'Tài liệu khác';
+                viewHeader.innerHTML = `
+                    <button onclick="closeFolder()" class="text-tech-blue hover:text-blue-700 hover:underline text-sm font-semibold mb-3 inline-flex items-center gap-1.5 transition-all hover:-translate-x-2 bg-blue-50 px-3 py-1.5 rounded-full"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách</button>
+                    <h2 class="text-xl font-bold text-tech-dark border-b border-slate-200 pb-3 fade-in"><i class="fa-solid fa-folder-open text-tech-cyan mr-2"></i> ${subjName}</h2>
+                `;
+                itemsToRender = documents.filter(d => d.subjectId === currentSubjectId);
+                renderFiles(itemsToRender);
+            }
+
+            if (itemsToRender.length === 0) {
+                documentGrid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+            } else {
+                documentGrid.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+            }
+        }
+
+        function renderFolders(folders) {
+            folders.forEach((sub, index) => {
+                const fileCount = documents.filter(d => d.subjectId === sub.id).length;
+                const semName = categories.find(c => c.id === sub.semester)?.name || '';
+
+                const card = document.createElement('div');
+                card.className = `glass-panel rounded-2xl p-5 flex flex-col hover:-translate-y-2 hover:shadow-[0_10px_40px_rgb(6,182,212,0.15)] hover:border-tech-cyan/50 cursor-pointer transition-all duration-300 group stagger-item`;
+                card.style.animationDelay = `${index * 0.05}s`;
+                card.onclick = () => openFolder(sub.id);
+                
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-14 h-14 rounded-xl flex items-center justify-center text-4xl text-tech-cyan/80 group-hover:text-tech-cyan group-hover:scale-110 transition-all duration-300 drop-shadow-sm group-hover:drop-shadow-md bg-cyan-50">
+                            <i class="fa-solid fa-folder"></i>
+                        </div>
+                        ${fileCount > 0 ? `<div class="bg-green-100 text-green-600 text-[10px] font-bold px-2 py-1 rounded-md animate-pulse">Có dữ liệu</div>` : ''}
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-[15px] mb-2 line-clamp-2 leading-snug group-hover:text-tech-blue transition-colors" title="${sub.name}">${sub.name}</h3>
+                    <div class="flex justify-between items-center mt-auto pt-4 border-t border-slate-100">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider font-mono">${semName}</span>
+                        <span class="text-xs font-semibold px-2.5 py-1 rounded-lg ${fileCount > 0 ? 'bg-blue-50 text-tech-blue border border-blue-100' : 'bg-slate-100 text-slate-500'}">${fileCount} File</span>
+                    </div>
+                `;
+                documentGrid.appendChild(card);
+            });
+        }
+
+        function renderFiles(files) {
+            files.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+            files.forEach((doc, index) => {
+                const d = new Date(doc.date);
+                const dateStr = `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth()+1).toString().padStart(2, '0')}/${d.getFullYear()}`;
+                
+                const subject = subjects.find(s => s.id === doc.subjectId);
+                const subjName = subject ? subject.name : 'Khác';
+                const isLink = doc.fileType === 'link';
+
+                const card = document.createElement('div');
+                card.className = `glass-panel rounded-2xl p-5 flex flex-col hover:-translate-y-2 hover:shadow-[0_10px_40px_rgb(29,78,216,0.12)] hover:border-tech-blue/30 transition-all duration-300 group stagger-item`;
+                card.style.animationDelay = `${index * 0.05}s`;
+                
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        ${getFileIcon(doc.fileType, doc.base64)}
+                        <button onclick="confirmDelete('${doc.id}')" class="text-slate-300 hover:text-tech-red transition-all p-2 rounded-lg bg-slate-50 hover:bg-red-50 border border-transparent hover:border-red-100 opacity-0 group-hover:opacity-100 hover:scale-110">
+                            <i class="fa-solid fa-trash-can text-sm"></i>
+                        </button>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-[14px] mb-2 line-clamp-2 leading-snug group-hover:text-tech-blue transition-colors" title="${doc.name}">${doc.name}</h3>
+                    <p class="text-xs text-slate-500 truncate mb-3" title="${subjName}"><i class="fa-solid fa-book text-slate-400 mr-1.5"></i> ${subjName}</p>
+                    <div class="flex items-center gap-2 mt-auto pt-3 border-t border-slate-100">
+                        <span class="text-xs text-slate-400 font-mono"><i class="fa-regular fa-clock"></i> ${dateStr}</span>
+                    </div>
+                    <div class="mt-4 flex gap-2">
+                        ${isLink 
+                            ? `<a href="${doc.url}" target="_blank" class="flex-1 bg-slate-100 hover:bg-gradient-to-r hover:from-tech-blue hover:to-blue-500 hover:text-white text-slate-700 text-xs font-bold py-2.5 rounded-xl text-center transition-all shadow-sm hover:shadow-md"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Mở Link</a>`
+                            : `<a href="${doc.base64}" download="${doc.name}" class="flex-1 bg-slate-100 hover:bg-gradient-to-r hover:from-tech-blue hover:to-blue-500 hover:text-white text-slate-700 text-xs font-bold py-2.5 rounded-xl text-center transition-all shadow-sm hover:shadow-md"><i class="fa-solid fa-download mr-1"></i> Tải về</a>`
+                        }
+                    </div>
+                `;
+                documentGrid.appendChild(card);
+            });
+        }
+
+        searchInput.addEventListener('input', renderDocuments);
+        function saveDocs() { localStorage.setItem('dlht_docs_v4', JSON.stringify(documents)); }
+
+        // --- UPLOAD MODAL ---
+        const uploadModal = document.getElementById('uploadModal');
+        const uploadForm = document.getElementById('uploadForm');
+        let uploadType = 'file'; 
+        let selectedFileBase64 = null;
+        let selectedFileType = null;
+        let selectedFileSize = 0;
+
+        document.getElementById('btnOpenUpload').addEventListener('click', () => {
+            uploadModal.classList.remove('hidden');
+            if (currentSubjectId) {
+                document.getElementById('docSubject').value = currentSubjectId;
+            } else if (currentSemester !== 'all') {
+                const firstSubj = subjects.find(s => s.semester === currentSemester);
+                if(firstSubj) document.getElementById('docSubject').value = firstSubj.id;
+            }
+        });
+        
+        document.getElementById('btnCloseUpload').addEventListener('click', () => {
+            uploadModal.classList.add('hidden');
+            resetUploadForm();
+        });
+
+        const tabUpload = document.getElementById('tabUpload');
+        const tabLink = document.getElementById('tabLink');
+        const panelUpload = document.getElementById('panelUpload');
+        const panelLink = document.getElementById('panelLink');
+
+        tabUpload.addEventListener('click', () => {
+            uploadType = 'file';
+            tabUpload.className = 'flex-1 py-1.5 text-sm font-bold bg-white text-tech-blue rounded shadow-sm transition-all';
+            tabLink.className = 'flex-1 py-1.5 text-sm font-medium text-slate-500 hover:text-slate-700 transition-all';
+            panelUpload.classList.remove('hidden');
+            panelLink.classList.add('hidden');
+            document.getElementById('docUrl').required = false;
+            document.getElementById('fileInput').required = true;
+        });
+
+        tabLink.addEventListener('click', () => {
+            uploadType = 'link';
+            tabLink.className = 'flex-1 py-1.5 text-sm font-bold bg-white text-tech-blue rounded shadow-sm transition-all';
+            tabUpload.className = 'flex-1 py-1.5 text-sm font-medium text-slate-500 hover:text-slate-700 transition-all';
+            panelLink.classList.remove('hidden');
+            panelUpload.classList.add('hidden');
+            document.getElementById('docUrl').required = true;
+            document.getElementById('fileInput').required = false;
+        });
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            selectedFileType = file.type || getExtType(file.name);
+            selectedFileSize = file.size;
+            if(!document.getElementById('docName').value) document.getElementById('docName').value = file.name;
+
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                selectedFileBase64 = ev.target.result;
+                document.getElementById('uploadPlaceholder').classList.add('hidden');
+                const preview = document.getElementById('uploadPreview');
+                preview.classList.remove('hidden');
+                
+                document.getElementById('previewIcon').innerHTML = getFileIcon(selectedFileType, selectedFileBase64);
+                document.getElementById('previewName').innerText = file.name;
+                document.getElementById('previewSize').innerText = formatBytes(selectedFileSize);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        document.getElementById('btnRemoveFile').addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('fileInput').value = '';
+            selectedFileBase64 = null;
+            document.getElementById('uploadPlaceholder').classList.remove('hidden');
+            document.getElementById('uploadPreview').classList.add('hidden');
+            document.getElementById('docName').value = '';
+        });
+
+        function getExtType(name) {
+            const ext = name.split('.').pop().toLowerCase();
+            if(['rar', 'zip'].includes(ext)) return 'application/zip';
+            if(['dwg', 'sldprt', 'prt', 'step'].includes(ext)) return 'application/cad';
+            if(ext === 'pdf') return 'application/pdf';
+            if(['docx', 'doc'].includes(ext)) return 'application/word';
+            if(['xlsx', 'xls'].includes(ext)) return 'application/excel';
+            if(['pptx', 'ppt'].includes(ext)) return 'application/powerpoint';
+            return 'application/octet-stream';
+        }
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function resetUploadForm() {
+            uploadForm.reset();
+            selectedFileBase64 = null;
+            selectedFileType = null;
+            document.getElementById('uploadPlaceholder').classList.remove('hidden');
+            document.getElementById('uploadPreview').classList.add('hidden');
+            document.getElementById('uploadProgress').classList.add('hidden');
+            document.getElementById('btnSubmitUpload').classList.remove('hidden');
+            tabUpload.click();
+        }
+
+        uploadForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('docName').value.trim();
+            const subjectId = document.getElementById('docSubject').value;
+            
+            if (uploadType === 'file' && !selectedFileBase64) {
+                showToast('Vui lòng chọn file trước khi tải lên!');
+                return;
+            }
+
+            document.getElementById('btnSubmitUpload').classList.add('hidden');
+            const progressContainer = document.getElementById('uploadProgress');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            progressContainer.classList.remove('hidden');
+
+            let p = 0;
+            const interval = setInterval(() => {
+                p += Math.floor(Math.random() * 20) + 10;
+                if (p > 100) p = 100;
+                progressBar.style.width = p + '%';
+                progressText.innerText = p + '%';
+
+                if (p === 100) {
+                    clearInterval(interval);
+                    setTimeout(() => finishUpload(name, subjectId), 600);
+                }
+            }, 150);
+        });
+
+        function finishUpload(name, subjectId) {
+            const newDoc = {
+                id: 'doc_' + Date.now(),
+                name: name,
+                subjectId: subjectId,
+                date: new Date().toISOString()
+            };
+            if (uploadType === 'link') {
+                newDoc.fileType = 'link';
+                newDoc.url = document.getElementById('docUrl').value.trim();
+            } else {
+                newDoc.fileType = selectedFileType;
+                newDoc.base64 = selectedFileBase64;
+            }
+
+            documents.unshift(newDoc);
+            saveDocs();
+            uploadModal.classList.add('hidden');
+            resetUploadForm();
+            currentSubjectId = subjectId;
+            
+            // Auto switch semester if the uploaded subject belongs to another semester
+            const subj = subjects.find(s => s.id === subjectId);
+            if(subj && currentSemester !== 'all') currentSemester = subj.semester;
+
+            renderCategories();
+            renderDocuments();
+            showToast('Tải lên tài liệu thành công!');
+        }
+
+        // --- DELETE MODAL ---
+        const deleteModal = document.getElementById('deleteModal');
+        window.confirmDelete = (id) => {
+            docToDelete = id;
+            deleteModal.classList.remove('hidden');
+        };
+
+        document.getElementById('btnCancelDelete').addEventListener('click', () => {
+            deleteModal.classList.add('hidden');
+            docToDelete = null;
+        });
+
+        document.getElementById('btnConfirmDelete').addEventListener('click', () => {
+            if (docToDelete) {
+                documents = documents.filter(d => d.id !== docToDelete);
+                saveDocs();
+                renderCategories();
+                renderDocuments();
+                deleteModal.classList.add('hidden');
+                docToDelete = null;
+                showToast('Đã xóa tài liệu thành công');
+            }
+        });
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
+        }
+
+        // --- AI FAET CHATBOT ---
+        const chatForm = document.getElementById('chatForm');
+        const chatInput = document.getElementById('chatInput');
+        const chatMessages = document.getElementById('chatMessages');
+
+        const aiResponses = [
+            { keywords: ['chào', 'hello', 'hi'], ans: 'Chào <b>Kỹ Sư Tương Lai</b>! Chúc bạn một ngày học tập thật hiệu quả. Cần hỗ trợ tài liệu học kỳ mấy hay tin tức từ Khoa FAET thì cứ nhắn mình nhé!' },
+            { keywords: ['hoạt động', 'phong trào', 'đoàn', 'tình nguyện', 'mùa hè xanh', 'trăng sáng thành đồng', 'faet music'], ans: 'Đoàn Khoa Công nghệ Động lực (FAET) luôn có các phong trào cực kỳ bùng nổ như <b>Mùa Hè Xanh, Trăng Sáng Thành Đồng, FAET MUSIC</b>. Bạn hãy bấm vào nút <b>Đoàn Khoa</b> ở trên để truy cập Fanpage và theo dõi các thông báo tuyển tình nguyện viên mới nhất nhé.' },
+            { keywords: ['bí kíp', 'học tập', 'phần mềm', 'cách học', 'solidworks', 'nx', 'bản vẽ'], ans: 'Để học tốt chuyên ngành Ô tô, <b>Kỹ Sư Tương Lai</b> nên chú trọng thực hành các phần mềm thiết kế như <b>SolidWorks</b> hay <b>Siemens NX</b> ngay từ sớm. Đọc bản vẽ là kỹ năng bắt buộc nhé!' },
+            { keywords: ['đồ án', 'đề tài', 'tốt nghiệp'], ans: 'Đồ án là lúc bạn áp dụng kiến thức. Hãy chú trọng vào các đề tài xu hướng như: Xe điện (EV), Hệ thống phanh ABS/EBD, Mô phỏng động lực học, hoặc Chẩn đoán lỗi OBD-II.' }
+        ];
+
+        function addMessage(text, isUser) {
+            const div = document.createElement('div');
+            div.className = `flex gap-3 stagger-item ${isUser ? 'flex-row-reverse' : ''}`;
+            if (isUser) {
+                div.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-tech-dark text-white flex items-center justify-center shrink-0 shadow-sm text-xs">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="bg-gradient-to-br from-tech-blue to-blue-600 text-white p-3 rounded-2xl rounded-tr-none shadow-md max-w-[85%] text-sm">
+                        ${text}
+                    </div>
+                `;
+            } else {
+                div.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-tech-cyan to-tech-blue text-white flex items-center justify-center shrink-0 shadow-md text-xs relative">
+                        <i class="fa-solid fa-robot relative z-10"></i>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-3.5 rounded-2xl rounded-tl-none shadow-sm max-w-[85%] text-sm text-slate-700 leading-relaxed">
+                        ${text}
+                    </div>
+                `;
+            }
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function showTyping() {
+            const div = document.createElement('div');
+            div.id = 'typingIndicator';
+            div.className = 'flex gap-3 fade-in';
+            div.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-tech-cyan to-tech-blue text-white flex items-center justify-center shrink-0 shadow-md text-xs">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <div class="bg-white border border-slate-200 p-4 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-1">
+                    <div class="w-2 h-2 bg-tech-cyan rounded-full typing-dot"></div>
+                    <div class="w-2 h-2 bg-tech-blue rounded-full typing-dot"></div>
+                    <div class="w-2 h-2 bg-purple-400 rounded-full typing-dot"></div>
+                </div>
+            `;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeTyping() {
+            const typing = document.getElementById('typingIndicator');
+            if (typing) typing.remove();
+        }
+
+        function getAIResponse(text) {
+            text = text.toLowerCase();
+            let response = 'Xin lỗi Kỹ Sư Tương Lai, mình chưa hiểu ý bạn lắm. Bạn có thể hỏi về các hoạt động Đoàn Khoa, kinh nghiệm học các phần mềm thiết kế, hoặc tìm kiếm tài liệu nhé.';
+            for (let item of aiResponses) {
+                if (item.keywords.some(kw => text.includes(kw))) {
+                    response = item.ans;
+                    break;
+                }
+            }
+            return response;
+        }
+
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = chatInput.value.trim();
+            if (!text) return;
+            addMessage(text, true);
+            chatInput.value = '';
+            showTyping();
+            setTimeout(() => {
+                removeTyping();
+                addMessage(getAIResponse(text), false);
+            }, 1000 + Math.random() * 1000);
+        });
+
+        document.querySelectorAll('.quick-prompt-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const text = btn.innerText;
+                addMessage(text, true);
+                showTyping();
+                setTimeout(() => {
+                    removeTyping();
+                    addMessage(getAIResponse(text), false);
+                }, 1000);
+            });
+        });
+
+        document.getElementById('btnClearChat').addEventListener('click', () => {
+            chatMessages.innerHTML = `
+                <div class="flex gap-3 fade-in">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-tech-blue to-tech-cyan text-white flex items-center justify-center shrink-0 shadow-md text-xs">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-3.5 rounded-2xl rounded-tl-none shadow-sm max-w-[85%] text-sm text-slate-700 leading-relaxed">
+                        Đã làm mới cuộc trò chuyện. <b>Kỹ Sư Tương Lai</b> cần hỗ trợ gì nữa không?
+                    </div>
+                </div>
+            `;
+        });
+
+        init();
+    </script>
+</body>
+</html>
